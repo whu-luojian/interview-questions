@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>原生js实现拖拽</title>
+  <style>
+    .A {
+      position: absolute;
+      height: 100px;
+      width: 100px;
+      background-color: red;
+      z-index: 9
+    }
+    .B {
+      position: relative;
+      top: 200px;
+      height: 300px;
+      border: 1px dashed black
+    }
+  </style>
+</head>
+<body>
+  <div class="A">A</div>
+  <div class="B">B</div>
+  <script>
+    window.onload = function() {
+      let elementA = document.querySelector(".A")
+      let elementB = document.querySelector(".B")
+      // 保留A的初始位置，未拖动到B内则回到初始位置
+      let initialPositionA = {
+        left: elementA.offsetLeft,
+        top: elementA.offsetTop
+      }
+
+      // B的位置
+      let positionB = {
+        xL: elementB.offsetLeft,
+        xR: elementB.offsetLeft + elementB.clientWidth,
+        yT: elementB.offsetTop,
+        yB: elementB.offsetTop + elementB.clientHeight
+      }
+      // let dragStartPosition = {
+      //   left: elementA.offsetLeft,
+      //   top: elementA.offsetTop
+      // }
+      let initialPageXY = {
+        x: 0,
+        y: 0
+      }
+      let draging = false
+      let inB = false
+      elementA.onmousedown = function(e) {
+        draging = true
+        elementA.style.cursor = 'move'
+        initialPageXY.x = e.pageX
+        initialPageXY.y = e.pageY
+        // dragStartPosition.left = elementA.offsetLeft
+        // dragStartPosition.top = elementA.offsetTop
+      }
+      elementA.onmousemove = function(e) {
+        if(draging) {
+          let positionA = {
+            x: e.pageX,
+            y: e.pageY
+          }
+          elementA.style.left = (positionA.x - initialPageXY.x + initialPositionA.left) + "px"
+          elementA.style.top = (positionA.y - initialPageXY.y + initialPositionA.top) + "px"
+          elementA.style.opacity = 0.5
+          if(elementA.offsetLeft >= positionB.xL && elementA.offsetLeft <= positionB.xR && elementA.offsetTop >= positionB.yT && elementA.offsetTop <= positionB.yB){
+            inB = true
+          }
+        }
+      }
+      elementA.onmouseup = function(e) {
+        draging = false
+        elementA.style.cursor = 'default'
+        elementA.style.opacity = 1
+        if(inB) {
+          elementA.onmousedown = null
+          elementA.onmousemove = null
+        } else {
+          elementA.style.left = initialPositionA.left + "px";
+          elementA.style.top = initialPositionA.top + "px"
+        }
+      }
+    }
+  </script>
+</body>
+</html>

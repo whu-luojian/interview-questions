@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>autocomplete</title>
+  <style>
+    #autocomplete {
+      position: relative;
+      height: 30px;
+      border: 1px solid gray;
+      border-radius: 4px
+    }
+    .wrapper {
+      position: absolute;
+    }
+    ul {      
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      width: 150px
+    }
+    li {
+      padding: 2px 5px;    
+    }
+    li:hover {
+      background-color: #eee
+    }
+  </style>
+</head>
+<body>
+  <input id="autocomplete" type="text">
+  <div class="wrapper">
+    <ul id="ul">
+    </ul>
+  </div>
+  <script>
+    // 函数防抖
+    function debounce(func, delay) {
+      let timeout
+      return () => {
+        if(timeout) {
+          clearTimeout(timeout)
+        } 
+        timeout = setTimeout(func, delay)
+      }
+    }
+    let data = ['abc', 'abb', 'bbc', 'aca', 'cde']
+    let element = document.getElementById('autocomplete')
+    let elementUl = document.getElementById("ul")
+    element.addEventListener('input', e => {
+      function handle(){
+        let value = e.target.value
+        let matchData = []
+        if(value) {
+          matchData = data.filter(item => {
+            return item.startsWith(value)
+          })
+        }
+        let ulStr = ""
+        for(value of matchData) {
+          ulStr += "<li>" + value + "</li>"
+        }
+        elementUl.innerHTML = ulStr
+      }
+      debounce(handle, 200)()
+    })
+    elementUl.addEventListener('click', e => {
+      if(e.target.localName === 'li') {
+        element.value = e.target.innerText
+        elementUl.innerHTML = ""
+      }
+    })
+  </script>
+</body>
+</html>
