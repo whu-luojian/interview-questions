@@ -1,0 +1,140 @@
+<!-- 
+  1. 无缝轮播
+  2. 支持移动端
+  3. 支持回调函数
+  4. 支持拖动（拖动1/2则切换，否则不变）
+  5. 自动播放
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>轮播图 | 透明度变化</title>
+   <style>
+     .slider_wrapper {
+       position: relative;
+       margin-left: 50%;
+       transform: translateX(-50%);
+       width: 400px;
+       height: 240px
+     }
+     .slider_item {
+       position: absolute;
+       width: 100%;
+       height: 100%;
+     }
+     .slider_img {
+       width: 100%;
+       height: 100%;
+       opacity: 1;
+       transition: opacity 0.5s ease-in-out
+     }
+     .slider_indicators {
+       position: absolute;
+       width: 100%;
+       bottom: 10px;
+       text-align: center;
+       z-index: 1
+     }
+     .slider_indicators_btn {
+       display: inline-block;
+       width: 10px;
+       height: 10px;
+       border-radius: 50%;
+       margin: 0 5px;
+       background-color: #bbb
+     }
+     .active {
+       background-color: #409eff;
+     }
+     .slider_control_prev {
+       position: absolute;
+       z-index: 2;
+       top: 50%;
+       transform: translateY(-50%);
+       width: 20px;
+       height: 30px;
+       line-height: 30px;
+       cursor: pointer;
+       color: #fff;
+       text-align: center;
+       background-color: rgba(0,0,0,0.2);
+     }
+     .slider_control_next {
+       position: absolute;
+       right: 0;
+       z-index: 2;
+       top: 50%;
+       transform: translateY(-50%);
+       width: 20px;
+       height: 30px;
+       line-height: 30px;
+       cursor: pointer;
+       color: #fff;
+       text-align: center;
+       background-color: rgba(0,0,0,0.2);
+     }
+   </style>
+ </head>
+ <body>
+   <div class="slider_wrapper">
+      <div class="slider_item" style="z-index: 1">
+        <img class="slider_img" src="./images/1.jpg">
+      </div>
+      <div class="slider_item">
+        <img class="slider_img" src="./images/2.jpg">
+      </div>
+      <div class="slider_item">
+        <img class="slider_img" src="./images/3.jpg">
+      </div>
+      <div class="slider_control_prev">&lt;</div>
+      <div class="slider_control_next">&gt;</div>
+      <div class="slider_indicators">
+        <li class="slider_indicators_btn active"></li>
+        <li class="slider_indicators_btn"></li>
+        <li class="slider_indicators_btn"></li>
+      </div>
+   </div>
+
+   <script>
+      window.onload = () => {
+        let img_items = document.getElementsByClassName("slider_img")
+        let indicators = document.getElementsByClassName("slider_indicators_btn")
+        let control_prev = document.querySelector(".slider_control_prev")
+        let control_next = document.querySelector(".slider_control_next")
+        let img_num = img_items.length
+        let index = 0
+        // 切换
+        function turn() {
+          if(index === img_num - 1) {
+            index = 0
+          } else {
+            index ++
+          }
+          for(let i = 0; i < img_num; i++) {
+            img_items[i].style.opacity = 0
+            indicators[i].classList.remove("active")
+          }
+          img_items[index].style.opacity = 1
+          indicators[index].classList.add("active")
+        }
+        let interval = setInterval(turn, 3000)
+        // 后退
+        control_prev.addEventListener('click', e => {
+          clearInterval(interval)
+          index = index === 2 ? 0 : index + 1
+          turn()
+          interval = setInterval(turn, 3000)
+        })
+        // 前进
+        control_next.addEventListener('click', e => {
+          clearInterval(interval)
+          turn()
+          interval = setInterval(turn, 3000)
+        })
+      }
+   </script>
+ </body>
+ </html>
