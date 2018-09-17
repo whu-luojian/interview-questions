@@ -4,7 +4,7 @@
  * @param {*结点左孩子} left 
  * @param {*结点右孩子} right 
  */
-function Node(data, left, right) {
+function Node(data, left, right){
     this.data = data
     this.left = left
     this.right = right
@@ -13,7 +13,7 @@ function Node(data, left, right) {
 /**
  * 定义一个二叉排序树
  */
-function BST() {
+function BST(){
     this.root = null
 }
 
@@ -53,7 +53,7 @@ BST.prototype.insert = function(data){
  * 翻转二叉树
  * @param {*要翻转的二叉树的根结点root} root 
  */
-function invertTree(root) {
+function invertTree(root){
     if(root !== null) {
         var temp = root.left
         root.left = root.right
@@ -64,7 +64,7 @@ function invertTree(root) {
     return root
 }
 
-function _main() {
+function _main(){
     let tree = new BST()
     let arr = [62, 88, 58, 47, 35, 73, 51, 99, 37, 93]
     arr.forEach(data => {
