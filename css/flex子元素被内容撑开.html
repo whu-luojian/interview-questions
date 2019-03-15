@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .flex, .flex1 {
+      display: flex;
+      width: 300px
+    }
+    .flex span {
+      flex: 1;
+      outline: 1px solid red
+    }
+    .flex1 span {
+      flex: 1;
+      outline: 1px solid red;
+      width: 0
+    }
+    .flex2 {
+      display: flex;
+      width: 100px;
+      flex-direction: column
+    }
+    .flex2 p {
+      outline: 1px solid red;
+      /* //连续的a会被认为是一个单词，不会自动换行 */
+      word-break: break-all 
+    }
+  </style>
+</head>
+<body>
+  <!-- // a,b,c三个span均分，每个100px宽 -->
+  <div class="flex">
+    <span>aaaa</span>
+    <span>bbbb</span>
+    <span>cccc</span>
+  </div>
+  <!-- // a元素过多撑开了span，宽度大于100px -->
+  <div class="flex">
+    <span>aaaaaaaaaaaaaaaaaaaaaa</span>
+    <span>bbbb</span>
+    <span>cccc</span>
+  </div>
+  <!-- // a元素过多撑开了span，宽度大于100px ,设置span的width为0可解决问题，之后做溢出处理或显示滑块-->
+  <div class="flex1">
+    <span>aaaaaaaaaaaaaaaaaaaaaa</span>
+    <span>bbbb</span>
+    <span>cccc</span>
+  </div>
+  
+  <div class="flex2">
+    <p>aaaaaaaaaaaaaaaaaaaaaa</p>
+    <p>bbbb</p>
+    <p>cccc</p>
+  </div>
+</body>
+</html>

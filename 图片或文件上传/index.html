@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0
+    }
+    html, body {
+      height: 100%;
+      position: relative;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 668px;
+      height: 608px;
+      border-radius: 5px;
+      border: 1px solid #ccc
+    }
+    .header {
+      height: 50px;
+      border-bottom: 1px solid #ccc;
+      position: relative;
+    }
+    .header-title {
+      display: inline-block;
+      color: red;
+      margin: 0 10px;
+      line-height: 50px;
+      box-sizing: border-box;
+      border-bottom: 2px solid red
+    }
+    .close-btn {
+      position: absolute;
+      right: 10px;
+      top:20px;
+      display: inline-block;
+      width: 15px;
+      height:2px;
+      background: #666;
+      line-height: 0;
+      font-size:0;
+      vertical-align: middle;
+      -webkit-transform: rotate(45deg);
+    }
+    .close-btn:after{
+      content:'';
+      display:block;
+      width: 15px;
+      height:2px; 
+      background: #666;
+      -webkit-transform: rotate(-90deg);
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 10px;
+      overflow-y: auto
+    }
+    .img-item {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+    }
+    .upload-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 110px;
+      height: 110px;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .footer {
+      height: 80px;
+      text-align: center
+    }
+    .upload-btn {
+      display: inline-block;
+      width: 75px;
+      height: 35px;
+      line-height: 35px;
+      background-color: red;
+      color: #fff;
+      cursor: pointer;
+    }
+    .cancel-btn {
+      display: inline-block;
+      width: 75px;
+      height: 35px;
+      line-height: 35px;
+      margin-left: 10px;
+      background-color: #ccc;
+      color: #333;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="header">
+      <p class="header-title">上传图片</p>
+      <div class="close-btn"></div>
+    </div>
+    <div class="main">
+      <div id="add-img" class="img-item">
+        <input id="add-btn" class="upload-img" type="file" accept="image/png,image/jpg,image/jpeg">
+        <img width="110" height="110" src="https://p1.pstatp.com/large/3ecd0004b6bdeff4c48d" alt="">
+      </div>
+    </div>
+    <div class="footer">
+      <div id='upload-btn' class="upload-btn">上传</div>
+      <div class="cancel-btn">取消</div>
+    </div>
+  </div>
+  <script>
+    let addBtn = document.getElementById('add-btn')
+    let addImg = document.getElementById('add-img')
+    let main = document.getElementsByClassName('main')[0]
+    let uploadBtn = document.getElementById('upload-btn')
+    let data = new FormData()
+    addBtn.addEventListener('change', e => {
+      let file = addBtn.files[0]
+      data.append('file', file)
+      let reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = function() {
+        let imgbase = reader.result
+        let img = document.createElement('img')
+        img.src = imgbase
+        img.width = 110
+        img.height = 110
+        let div = document.createElement('div')
+        div.className = 'img-item'
+        div.appendChild(img)
+        main.insertBefore(div, addImg)
+      }
+    })
+    uploadBtn.addEventListener('click', e => {
+      let xhr = new XMLHttpRequest()
+      xhr.onload = function() {
+        console.log(xhr.responseText)
+      }
+      xhr.open('post', 'https://mp.toutiao.com/profile_v2/')
+      xhr.send(data)
+    })
+  </script>
+</body>
+</html>
