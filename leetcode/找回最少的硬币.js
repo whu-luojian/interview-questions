@@ -10,4 +10,6 @@ function giveChange(price) {
   }
   return ans
 }
+
+// 测试
 console.log(giveChange(200))

@@ -44,4 +44,4 @@ function toDecimal(number, n) {
 
 // 测试用例
 let arr = [3, 4, 5]
-console.log(longestRope(arr, 4)) // 2.50
+console.log(longestRope(arr, 4))
