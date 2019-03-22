@@ -60,29 +60,29 @@ function deepColne2(obj) {
   let srcQue = [obj]
   let srcVisitedQue = []
   let copyQue = [newObj]
-  let copyVisitedQue = []
   while(srcQue.length > 0) {
     let curSrcElement = srcQue.shift()
     let curCopyElement = copyQue.shift()
     srcVisitedQue.push(curSrcElement)
-    copyVisitedQue.push(curCopyElement)
 
     for(let key in curSrcElement) {
-      if(!(curSrcElement[key] instanceof Object)) {
-        curCopyElement[key] = curSrcElement[key]
-      } else if(curSrcElement[key] instanceof Date) {
-        curCopyElement[key] = new Date(curSrcElement[key])
-      } else if(curSrcElement[key] instanceof RegExp) {
-        curCopyElement[key] = new RegExp(curSrcElement[key])
-      } else {
-        //判断是否出现环，即是否被访问
-        let index = srcVisitedQue.indexOf(curSrcElement[key])
-        if(index !== -1) {
-          curCopyElement[key] = srcVisitedQue[index]
+      if(curSrcElement.hasOwnProperty(key)) {
+        if(!(curSrcElement[key] instanceof Object)) {
+          curCopyElement[key] = curSrcElement[key]
+        } else if(curSrcElement[key] instanceof Date) {
+          curCopyElement[key] = new Date(curSrcElement[key])
+        } else if(curSrcElement[key] instanceof RegExp) {
+          curCopyElement[key] = new RegExp(curSrcElement[key])
         } else {
-          curCopyElement[key] = curSrcElement[key] instanceof Array ? [] : {}
-          srcQue.push(curSrcElement[key])
-          copyQue.push(curCopyElement[key])
+          //判断是否出现环，即是否被访问
+          let index = srcVisitedQue.indexOf(curSrcElement[key])
+          if(index !== -1) {
+            curCopyElement[key] = srcVisitedQue[index]
+          } else {
+            curCopyElement[key] = curSrcElement[key] instanceof Array ? [] : {}
+            srcQue.push(curSrcElement[key])
+            copyQue.push(curCopyElement[key])
+          }
         }
       }
     }
