@@ -1,20 +1,4 @@
-// 1. bind实现，返回一个新函数
-Function.prototype.mybind = function(context) {
-  // 缓存绑定的函数
-  let _this = this
-  // 获取bind时添加的参数
-  let args = [...arguments].slice(1)
-  // 返回一个函数
-  return function F() {
-    // 因为返回了一个函数，所有可以new F(),所有需要判断
-    if(this instanceof F) {
-      return new _this(...args, ...arguments)
-    }
-    return _this.apply(context, args.concat(...arguments))
-  }
-}
-
-// 2. call实现
+// 1. call实现
 Function.prototype.mycall = function(context) {
   // 给context添加一个属性fn，等于被call的函数
   context.fn = this
